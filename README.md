@@ -4,14 +4,10 @@ my setup
 
 ```shell script
 wget https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent-all.jar
-# wget your-exporter
-wget https://github.com/lightstep/opentelemetry-exporter-java/releases/download/0.6.0/lightstep-opentelemetry-auto-exporter-0.6.0.jar
 mvn clean package && \
 java \
   -javaagent:`pwd`/opentelemetry-javaagent-all.jar \
-  -Dotel.exporter.jar=`pwd`/lightstep-opentelemetry-auto-exporter-0.6.0.jar \
   -Dotel.propagators=ottracer \
-  -Dotel.exporter.lightstep.config.file=`pwd`/lightstep.config \
   -Dotel.integration.okhttp.enabled=false \
   -jar target/app.jar
 ```
@@ -38,9 +34,7 @@ Run the program again without the okhttp disabled.
 ```shell script
 java \
   -javaagent:`pwd`/opentelemetry-javaagent-all.jar \
-  -Dotel.exporter.jar=`pwd`/lightstep-opentelemetry-auto-exporter-0.6.0.jar \
   -Dotel.propagators=ottracer \
-  -Dotel.exporter.lightstep.config.file=`pwd`/lightstep.config \
   -jar target/app.jar
 ```
 invoke a non opentracing client with
@@ -50,3 +44,4 @@ curl localhost:8080/controller-no-opentracing
 and observe the ot-tracer headers in netcat.
 
 From what I've seen, the shim is entering the inject method but the context it is trying to inject is empty.
+There will be some errors about the default otel exporter not responding, but the exporter is not necessary to see the lack of propagation headers.
