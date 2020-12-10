@@ -1,4 +1,4 @@
-package org.example.otel;
+package org.example.hazelcast;
 
 
 import org.springframework.boot.SpringApplication;
